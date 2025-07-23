@@ -1,4 +1,4 @@
-import '@/styles/globals.css'; // Assicurati che punti al file giusto
+import '../styles/globals.css'; // Assicurati che punti al file giusto
 import Head from 'next/head';
 
 export default function MyApp({ Component, pageProps }) {
