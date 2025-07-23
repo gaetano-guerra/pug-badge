@@ -16,11 +16,13 @@ export default function BadgePage() {
         <meta property="og:title" content={title} />
         <meta property="og:image" content={imageUrl} />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={\`https://pugfest.vercel.app/badge
+        <meta property="og:url" content="https://pugfest.vercel.app/badge" />
       </Head>
 
       <h1 className="text-3xl font-bold mb-4">🎟️ Il tuo badge per il PUG! 2025</h1>
-      <p className="mb-6 text-gray-700">Benvenutə <strong>{name}</strong>, ufficialmente <strong>{role}</strong> del festival!</p>
+      <p className="mb-6 text-gray-700">
+        Benvenutə <strong>{name}</strong>, ufficialmente <strong>{role}</strong> del festival!
+      </p>
 
       <img
         src={imageUrl}
@@ -29,7 +31,7 @@ export default function BadgePage() {
       />
 
       <a
-        href={`https://pugfest.vercel.app/badge
+        href="https://pugfest.vercel.app/badge"
         target="_blank"
         rel="noopener noreferrer"
         className="mt-8 bg-black text-white px-6 py-3 rounded-full text-lg hover:bg-gray-800"
