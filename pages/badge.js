@@ -1,70 +1,61 @@
+// pages/badges.js
 import { useSearchParams } from "next/navigation";
 import Head from "next/head";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
-export default function BadgePage() {
-  const searchParams = useSearchParams();
-  const name = searchParams.get("name") || "Partecipante";
-  const role = searchParams.get("role") || "Design Lover";
+const roleStyles = {
+  staff: { from: "from-yellow-300", to: "to-yellow-500", text: "text-black" },
+  speaker: { from: "from-pink-400", to: "to-pink-600", text: "text-black" },
+  volontario: { from: "from-green-400", to: "to-green-600", text: "text-black" },
+};
 
-  const title = `${name} | ${role} | PUG! Design Fest 2025`;
-  const imageUrl = `https://dummyimage.com/1200x630/000/fff.png&text=${encodeURIComponent(
-    name + " – " + role
-  )}`;
+export default function BadgesPage() {
+  const params = useSearchParams();
+  const name = params.get("name") || "Partecipante";
+  const role = (params.get("role") || "Speaker").toLowerCase();
 
-  const getBackgroundColor = (role) => {
-    switch (role.toLowerCase()) {
-      case "staff":
-        return "bg-yellow-400 text-black";
-      case "speaker":
-        return "bg-pink-500 text-white";
-      case "ospite":
-        return "bg-white text-black";
-      default:
-        return "bg-neutral-100 text-black";
-    }
-  };
+  const style = roleStyles[role] || { from: "from-gray-200", to: "to-gray-400", text: "text-black" };
 
-  const badgeStyle = getBackgroundColor(role);
-
+  const title = `${name} | ${role}`;
+  
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      className="flex flex-col items-center justify-center min-h-screen bg-[#f0f0f0] text-center p-6"
-    >
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center py-16 px-4">
       <Head>
-        <title>{title}</title>
-        <meta property="og:title" content={title} />
-        <meta property="og:image" content={imageUrl} />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://pugfest.vercel.app/badge" />
+        <title>Badge – {name}</title>
+        <meta name="robots" content="noindex" />
       </Head>
 
-      <div className={`rounded-xl shadow-lg w-[300px] h-[480px] p-6 flex flex-col justify-between ${badgeStyle}`}> 
-        <div className="text-left">
-          <p className="uppercase text-xs tracking-widest font-semibold mb-2">{role}</p>
-          <h1 className="text-3xl font-bold leading-tight break-words">{name}</h1>
-        </div>
-
-        <div className="text-sm text-left">
-          <p className="uppercase font-bold">PUG! Design Fest 2025</p>
-          <p className="mt-1 text-xs">[LOGO PUG QUI]</p>
-        </div>
-      </div>
-
-      <motion.a
-        href={`https://pugfest.vercel.app/badge?name=${name}&role=${role}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-8 bg-black text-white px-6 py-3 rounded-full text-lg hover:bg-gray-800"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7, duration: 0.4 }}
+      <motion.div
+        className="grid gap-8"
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: {},
+          visible: { transition: { staggerChildren: 0.2 } }
+        }}
       >
-        Condividi su LinkedIn ↗
-      </motion.a>
-    </motion.div>
+        <AnimatePresence>
+          <motion.div
+            className={`rounded-xl shadow-2xl w-72 h-96 p-6 flex flex-col justify-between bg-gradient-to-br ${style.from} ${style.to} ${style.text}`}
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="flex justify-between items-start">
+              <div>
+                <p className="uppercase text-xs tracking-widest">{role}</p>
+                <h1 className="mt-2 text-2xl font-extrabold leading-tight">{name}</h1>
+              </div>
+              <div className="w-12 h-12 bg-white flex items-center justify-center rounded-full text-sm font-bold text-gray-800">
+                PUG
+              </div>
+            </div>
+
+            <p className="uppercase text-xs tracking-[4px] opacity-80">Design Fest 2025</p>
+          </motion.div>
+        </AnimatePresence>
+      </motion.div>
+    </div>
   );
 }
